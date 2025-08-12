@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8080"      # host:container
+    environment:
+      FLAG: "CTF{Mike_sql_injection}"
+    volumes:
+      - dbdata:/data     # persist DB so the flag survives restart
+    restart: unless-stopped
+volumes:
+  dbdata:

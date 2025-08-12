@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Acme Portal — CTF Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="grid">
+    <!-- Login card -->
+    <section class="card">
+      <div class="title">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Acme Portal <span class="badge">Web Exploitation</span></h1>
+          <p class="muted">Please sign in to continue.</p>
+        </div>
+      </div>
+
+      {% if msg %}
+        <div class="alert">{{ msg }}</div>
+      {% endif %}
+
+      {% if success %}
+        <div class="alert success">{{ success }}</div>
+      {% endif %}
+
+      <form method="POST" action="/login" autocomplete="off">
+        <div>
+          <label for="username">Username</label>
+          <div class="field">
+            <input id="username" name="username" placeholder="e.g., admin" required>
+          </div>
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <div class="field">
+            <input id="password" name="password" type="password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <button class="btn" type="submit">Sign in</button>
+
+        <div class="hint">
+          <strong>Hint:</strong> “Parameterized queries are <em>too slow</em>,” said the dev.  
+          Maybe <code>' --</code> could help… 👀
+        </div>
+      </form>
+      <div class="footer">© {{ 2025 }} Acme CTF — For educational use</div>
+    </section>
+
+    <!-- Right panel: challenge info -->
+    <aside class="side">
+      <div class="panel">
+        <h3>Challenge Brief</h3>
+        <p class="muted">Find a way to log in as <code>admin</code>. The admin’s password is… special.</p>
+      </div>
+      <div class="panel">
+        <h3>Rules</h3>
+        <ul class="list">
+          <li>No brute force or automated scanners.</li>
+          <li>Only interact with this host and port.</li>
+          <li>Flag format: <code>CTF{...}</code></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Tips</h3>
+        <ul class="list">
+          <li>Single quotes and comments are powerful.</li>
+          <li>Reduce the WHERE clause to just the username.</li>
+          <li>When you’re admin, read the success message carefully.</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+</body>
+</html>

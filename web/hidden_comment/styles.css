@@ -1,0 +1,75 @@
+:root {
+  --bg: #0e1025;
+  --surface: #15193a;
+  --border: #232955;
+  --fg: #e8ecf6;
+  --muted: #a8b0c8;
+  --accent: #8ab4ff;
+  --shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Arial, "Noto Sans", sans-serif;
+  background:
+    radial-gradient(1200px 600px at -10% -20%, #3a47ff10, transparent 60%),
+    radial-gradient(1200px 600px at 110% 10%, #30d5ff10, transparent 60%),
+    linear-gradient(180deg, #0b0e20, var(--bg));
+}
+
+/* Header / nav */
+.site-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  background: rgba(10,12,26,.5); backdrop-filter: blur(6px);
+  position: sticky; top: 0; z-index: 10;
+}
+.brand { font-weight: 800; letter-spacing: 0.3px; }
+.nav a {
+  color: var(--muted); text-decoration: none; margin-left: 14px; padding: 8px 10px;
+  border-radius: 10px; transition: background .15s ease, color .15s ease;
+}
+.nav a:hover { color: var(--fg); background: rgba(255,255,255,.06); }
+.nav a.active { color: #0c132e; background: var(--accent); font-weight: 700; }
+
+/* Layout */
+.container { width: min(1000px, 92vw); margin: 0 auto; }
+.hero {
+  min-height: calc(100vh - 140px);
+  display: grid; place-items: center; padding: 40px 20px;
+}
+.hero-card {
+  width: min(900px, 92vw); background: rgba(21,25,58,.7);
+  border: 1px solid var(--border); border-radius: 22px; padding: 28px;
+  box-shadow: var(--shadow); backdrop-filter: blur(8px);
+}
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 14px;
+}
+.mini-card {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px;
+}
+.content { padding: 28px 0; }
+.card-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 8px; }
+.resource {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 16px; padding: 16px;
+}
+
+h1, h3 { margin: 0 0 8px; }
+.muted { color: var(--muted); }
+
+.site-footer {
+  padding: 18px 20px; border-top: 1px solid var(--border);
+  color: var(--muted); text-align: center; background: rgba(10,12,26,.5);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .grid, .card-list { grid-template-columns: 1fr; }
+  .nav a { margin-left: 8px; }
+}
