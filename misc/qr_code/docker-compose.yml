@@ -1,0 +1,8 @@
+services:
+  qr:
+    build: .
+    container_name: ctf-qr
+    ports:
+      - "7000:8000"
+    environment:
+      FLAG_QR: "CTF{Mike_QR_Code}"   # change this if you want
