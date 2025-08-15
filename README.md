@@ -1,4 +1,4 @@
-# ctf-platform-learning
+# CTF-platform-learning
 
 Hands-on CTF platform for training and assessment. Five categories with Easy/Medium/Hard levels. **Flags use `CTF{...}`** and can be **static** or **dynamic** (generated at runtime).
 
@@ -12,5 +12,6 @@ cd ctf-platform-learning
 cp .env.example .env   # e.g., set FLAG_SEED, ports
 docker compose up -d
 docker compose ps
+
 
 
