@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wrong Extension</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; text-align: center; padding: 40px; }
+        .container { background: white; padding: 20px; border-radius: 10px; display: inline-block; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        p { font-size: 16px; color: #555; }
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        a.button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Challenge: Wrong Extension</h1>
+        <p>
+            You have been given a suspicious file named <b>picture.jpg</b>.<br>
+            It may not be what it seems. Can you find the hidden flag?
+        </p>
+        <ol style="text-align:left; display:inline-block;">
+            <li>Click the download button below to get the file.</li>
+            <li>Inspect the file type using <code>file picture.jpg</code>.</li>
+            <li>If it is not really a JPG, figure out how to open it.</li>
+            <li>Find <code>flag.txt</code> inside and submit it to the platform.</li>
+        </ol>
+        <a href="picture.jpg" class="button" download>Download File</a>
+    </div>
+</body>
+</html>

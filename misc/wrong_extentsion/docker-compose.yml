@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  wrong-extension:
+    build: .
+    ports:
+      - "5555:80"
+    restart: unless-stopped
