@@ -7,8 +7,10 @@ Hands-on CTF platform for training and assessment. Five categories with Easy/Med
 
 ## Quick Start
 ```bash
-git clone https://github.com/<your-org>/ctf-platform-learning.git
+git clone https://github.com/JKotchamon/ctf-platform-learning.git
 cd ctf-platform-learning
 cp .env.example .env   # e.g., set FLAG_SEED, ports
 docker compose up -d
 docker compose ps
+
+
