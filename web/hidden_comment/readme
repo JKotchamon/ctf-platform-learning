@@ -1,0 +1,18 @@
+**Hidden Comment**.
+
+## Quick Start
+
+**Requirements:** Docker and Docker Compose.
+
+```bash
+# 1) Build & run
+docker compose up -d
+
+# 2) Open the site
+# http://localhost:8080
+```
+
+Stop everything:
+```bash
+docker compose down
+```
