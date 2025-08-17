@@ -1,0 +1,6 @@
+services:
+  log_jam:
+    build: .
+    container_name: ctf-log-jam
+    ports:
+      - "9999:8080"
