@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Weird Encodings Chain</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="stylesheet" href="/static/style.css"/>
+  <style>
+    /* hint UI */
+    details { background:#0f1320; border:1px solid #23283b; border-radius:12px; padding:.9rem 1rem; margin:.7rem 0; }
+    details[open] { background:#12172a; }
+    details > summary { cursor:pointer; font-weight:600; outline:none; }
+    code.inline { padding:.15rem .35rem; background:#1b2136; border-radius:6px; }
+    .hash { user-select:all; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Weird Encodings Chain</h1>
+
+    <ul class="bullets">
+      <li><b>File:</b> A text file that looks like gibberish.</li>
+      <li><b>Trick:</b> Multiple layers — peel carefully.</li>
+      <li><b>Difficulty:</b> Hard — persistence pays off.</li>
+      <li><b>Flag hash (SHA-256):</b> <code class="inline hash">{{ pub_hash }}</code></li>
+    </ul>
+
+    <p><a class="btn" href="/download">Download <b>weird.txt</b></a></p>
+
+    <h2 style="margin-top:2rem;">Hints (progressive)</h2>
+
+    <details>
+        <summary>Hint 1 (gentle)</summary>
+        <p>The text is made entirely of characters 0–9 and a–f.  
+        That usually means you should think in pairs.</p>
+    </details>
+
+    <details>
+        <summary>Hint 2 (medium)</summary>
+        <p>Once you turn those pairs into symbols, you’ll see a strange language
+        of dots, dashes, and slashes. It’s older than telephones.</p>
+    </details>
+
+    <details>
+        <summary>Hint 3 (strong)</summary>
+        <p>After the beeps become letters, they still read a bit “tilted.”
+            Give every letter the same small rotation; digits and symbols stay put,
+            and the shift wraps around the ends (…Z rolls back to A). Doing the same twist twice cancels it.</p>
+    </details>
+
+    <details>
+        <summary>Hint 4 (final)</summary>
+        <p>Now you’ll hold a message that only uses uppercase letters A–Z and the digits 2–7.
+        It’s a way computers often turn binary into text for easier copying.</p>
+    </details>
+
+    <details>
+        <summary>Hint 5 (bonus)</summary>
+        <p>Every layer builds on the last — don’t skip steps.  
+        If your output looks nonsense, retrace and try peeling one layer at a time.</p>
+    </details>
+
+    <p class="tiny">If you get stuck, consider whether you’re decoding in the right order — onions don’t peel from the middle 🧅.</p>
+  </main>
+</body>
+</html>

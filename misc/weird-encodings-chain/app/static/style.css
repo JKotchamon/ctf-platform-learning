@@ -1,0 +1,6 @@
+body { background:#0f1115; color:#e7e9ee; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; }
+main { max-width:820px; margin:6rem auto; padding:2rem 2.5rem; background:#151823; border-radius:20px; box-shadow:0 10px 40px rgba(0,0,0,.35); }
+h1 { font-size:2rem; margin:0 0 1rem; }
+.bullets { line-height:1.6; }
+.btn { display:inline-block; margin-top:1rem; padding:.7rem 1rem; background:#4f46e5; color:#fff; border-radius:12px; text-decoration:none; }
+.tiny { opacity:.75; font-size:.9rem; margin-top:1rem; }
