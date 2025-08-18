@@ -3,6 +3,8 @@
 ## Quick Start
 
 **Requirements:** Docker, Docker Compose.
+# 0) Install Python deps
+pip install -r requirements.txt
 
 ```bash
 # 1) Build & run (auto-generates a random flag at startup)
