@@ -1,11 +1,10 @@
 import os
 from flask import Flask, render_template, send_from_directory, request, redirect, url_for, flash
-from .flags import check_flag  # <-- package import
+from .flags import check_flag  # package-relative import (because we're in web/):contentReference[oaicite:9]{index=9}
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 
-# where the generator writes the pcap
 PCAP_DIR = os.environ.get("PCAP_DIR", "/app/challenge")
 PCAP_NAME = os.environ.get("PCAP_NAME", "sample.pcap")
 

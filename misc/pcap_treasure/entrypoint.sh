@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
-# 1) generate a pcap on every start (picks up env FLAG and mode)
-python /app/web/generate_pcap.py
+# Run inside the web package so relative imports work
+cd /app/web
 
-# 2) run the web app
+# 1) Generate the PCAP (uses FLAG / PCAP_MODE / PCAP_DIR / PCAP_NAME)
+python generate_pcap.py
+
+# 2) Start Flask
+export FLASK_APP=app:app
 exec python -m flask run --host=0.0.0.0 --port=8080

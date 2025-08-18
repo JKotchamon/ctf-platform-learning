@@ -1,15 +1,16 @@
-version: "3.9"
 services:
   pcap_ctf:
     build: .
+    container_name: pcap_ctf-1
     ports:
-      - "8082:8080"
+      - "8081:8080"
     environment:
-      # === change these to create a new challenge ===
-      - FLAG=CTF{pcap_padding_fun}
-      - PCAP_MODE=DNS_BASE64         # or ETH_PADDING
-      - PCAP_NAME=sample.pcap
-      # optional tunables:
-      - DNS_CHUNK=6
-      - ETH_CHUNK=6
-      - SECRET_KEY=change-me
+      FLAG: "CTF{log_padding_rocks}"     # checked in flags.py:contentReference[oaicite:3]{index=3}
+      PCAP_MODE: "ETH_PADDING"        # DNS_TXT | DNS_BASE64 | ETH_PADDING:contentReference[oaicite:4]{index=4}
+      SECRET_KEY: "change-me"         # Flask flash messages:contentReference[oaicite:5]{index=5}
+      PCAP_DIR: "/app/challenge"
+      PCAP_NAME: "sample.pcap"
+      DNS_CHUNK: "8"
+    volumes:
+      - ./challenge:/app/challenge
+    restart: unless-stopped

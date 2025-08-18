@@ -1,23 +1,20 @@
 FROM python:3.11-slim
 
 WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 FLASK_APP=web.app
 
-# copy source
-COPY web/ /app/web/
-COPY challenge/ /app/challenge/
-COPY requirements.txt /app/requirements.txt
-COPY entrypoint.sh /app/entrypoint.sh
+# (Optional) small base utilities
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tzdata ca-certificates && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir -r /app/requirements.txt \
- && chmod +x /app/entrypoint.sh
+# Python deps
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt  # flask, scapy:contentReference[oaicite:2]{index=2}
 
-# default env (override in compose)
-ENV PCAP_DIR=/app/challenge \
-    PCAP_NAME=sample.pcap \
-    PCAP_MODE=DNS_TXT \
-    DNS_CHUNK=12 \
-    ETH_CHUNK=6
+# App code
+COPY . .
+
+# Normalize Windows line-endings and make entrypoint executable
+RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 EXPOSE 8080
 ENTRYPOINT ["/app/entrypoint.sh"]
