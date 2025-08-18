@@ -1,0 +1,12 @@
+**Weird Encodings Chain**
+
+## Quick Start
+
+**Requirements:** Docker, Docker Compose.
+
+```bash
+# 1) Build & run (auto-generates a random flag at startup)
+docker compose up --build -d
+
+#    Open the site
+#    http://localhost:8081
