@@ -1,7 +1,10 @@
-FROM nginx:alpine
+# Use a small Nginx image
+FROM nginx:1.27-alpine
 
-# Copy HTML and the download file from the project root
-COPY index.html /usr/share/nginx/html/index.html
-COPY picture.jpg /usr/share/nginx/html/picture.jpg
+# Copy our nginx config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy static assets into the html directory
+COPY index.html style.css script.js picture.jpg /usr/share/nginx/html/
 
 EXPOSE 80

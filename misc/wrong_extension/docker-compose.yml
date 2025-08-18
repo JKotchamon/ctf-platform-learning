@@ -1,7 +1,10 @@
-version: "3.9"
 services:
-  wrong-extension:
-    build: .
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "5555:80"
-    restart: unless-stopped
+      - "8080:80"
+    # Uncomment during development to hot-reload static files without rebuilding:
+    # volumes:
+    #   - ./:/usr/share/nginx/html:ro
