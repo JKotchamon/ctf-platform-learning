@@ -12,12 +12,36 @@
     details > summary { cursor:pointer; font-weight:600; outline:none; }
     code.inline { padding:.15rem .35rem; background:#1b2136; border-radius:6px; }
     .hash { user-select:all; }
+
+    /* flag form */
+    .flag-box { margin-top:1rem; padding:1rem; background:#0f1320; border-radius:12px; border:1px solid #23283b; }
+    .flag-box h2 { margin-top:0; }
+    .flag-row { display:flex; gap:.75rem; align-items:center; }
+    input[type=text] { flex:1; padding:.6rem .75rem; border-radius:8px; border:1px solid #23283b; background:#fff; color:#111; }
+    button { padding:.6rem 1rem; border:none; border-radius:8px; background:#3b82f6; color:#fff; font-weight:700; cursor:pointer; }
+    #result { margin-top:.7rem; font-weight:700; }
+    #result.ok { color:#22c55e; }
+    #result.fail { color:#ef4444; }
+
+    .btn { display:inline-block; padding:.6rem 1rem; border-radius:8px; background:#1f6feb; color:#fff; text-decoration:none; font-weight:600; }
+    .bullets { margin-top:1rem; }
   </style>
 </head>
 <body>
   <main>
     <h1>Weird Encodings Chain</h1>
 
+    <!-- Flag Submission Channel FIRST -->
+    <div class="flag-box">
+      <h2>Submit Your Flag</h2>
+      <form id="flagForm" class="flag-row">
+        <input type="text" id="flagInput" placeholder="Enter flag here (CTF{...})" required/>
+        <button type="submit">Check</button>
+      </form>
+      <div id="result"></div>
+    </div>
+
+    <!-- Challenge meta and hash BELOW the submission box -->
     <ul class="bullets">
       <li><b>File:</b> A text file that looks like gibberish.</li>
       <li><b>Trick:</b> Multiple layers — peel carefully.</li>
@@ -44,8 +68,8 @@
     <details>
         <summary>Hint 3 (strong)</summary>
         <p>After the beeps become letters, they still read a bit “tilted.”
-            Give every letter the same small rotation; digits and symbols stay put,
-            and the shift wraps around the ends (…Z rolls back to A). Doing the same twist twice cancels it.</p>
+           Give every letter the same small rotation; digits and symbols stay put,
+           and the shift wraps around the ends (…Z rolls back to A). Doing the same twist twice cancels it.</p>
     </details>
 
     <details>
@@ -62,5 +86,26 @@
 
     <p class="tiny">If you get stuck, consider whether you’re decoding in the right order — onions don’t peel from the middle 🧅.</p>
   </main>
+
+  <script>
+    document.getElementById("flagForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const flag = document.getElementById("flagInput").value.trim();
+      const res = await fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ flag })
+      });
+      const data = await res.json();
+      const result = document.getElementById("result");
+      if (data.correct) {
+        result.textContent = "Correct flag!";
+        result.className = "ok";
+      } else {
+        result.textContent = "Wrong flag, try again.";
+        result.className = "fail";
+      }
+    });
+  </script>
 </body>
 </html>

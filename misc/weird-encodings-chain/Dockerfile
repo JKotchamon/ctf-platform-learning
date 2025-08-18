@@ -1,26 +1,26 @@
-FROM python:3.12-slim
+# syntax=docker/dockerfile:1
+FROM python:3.11-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+# System deps (optional but handy)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates tini && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/app
 
-# Install dependencies
+# Install Python deps first (better caching)
 COPY requirements.txt .
-RUN python -m pip install --upgrade pip \
- && pip install --no-cache-dir -r requirements.txt \
- # sanity check: make the build fail if Flask isn't present
- && python - <<'PY'
-import importlib, sys
-m = importlib.import_module("flask")
-print("Flask OK:", getattr(m, "__version__", "unknown"))
-PY
+RUN pip install --no-cache-dir -r requirements.txt
 
-# App code
-COPY app ./app
-COPY tools ./tools
-COPY entrypoint.sh .
-RUN chmod +x /srv/app/entrypoint.sh
+# Copy the rest of the project
+COPY . .
 
+# Normalize line endings and ensure executability
+RUN sed -i 's/\r$//' /srv/app/entrypoint.sh /srv/app/tools/*.py /srv/app/app/app.py && \
+    chmod +x /srv/app/entrypoint.sh
+
+# The Flask app listens on 8081 (see app.py):contentReference[oaicite:1]{index=1}
 EXPOSE 8081
-ENTRYPOINT ["./entrypoint.sh"]
+
+# Use tini to handle signals cleanly
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/srv/app/entrypoint.sh"]
