@@ -1,10 +1,8 @@
 version: "3.9"
 services:
-  stego-medium:
+  stego:
     image: ctf-stego-medium
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     ports:
-      - "8081:80"
+      - "7777:80"      # open http://localhost:7777
     restart: unless-stopped
