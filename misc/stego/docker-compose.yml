@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  stego-medium:
+    image: ctf-stego-medium
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    restart: unless-stopped
