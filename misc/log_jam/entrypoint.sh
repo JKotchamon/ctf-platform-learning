@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
-# log-jam/entrypoint.sh
 set -euo pipefail
 
+# Ensure dirs exist
 mkdir -p /app/logs
+
+# Generate noisy logs + hidden fragments
 python /app/generate_logs.py
 
-# Optional: provide a quick landing page
-cat > /app/index.html <<'HTML'
-<!DOCTYPE html>
-<html>
-  <head><meta charset="utf-8"><title>Log Jam</title></head>
-  <body>
-    <h1>Log Jam</h1>
-    <p>Download logs from <a href="/logs/">/logs/</a> and find the flag.</p>
-    <p>Player brief: see <a href="/README_player.md">README_player.md</a>.</p>
-  </body>
-</html>
-HTML
+# Create logs.zip with Python (no apt packages needed)
+python - <<'PY'
+import os, zipfile
+root = "/app/logs"
+zip_path = "/app/logs.zip"
+with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+    for base, _, files in os.walk(root):
+        for f in files:
+            full = os.path.join(base, f)
+            # include "logs/..." inside the zip
+            zf.write(full, os.path.relpath(full, "/app"))
+PY
 
-# Serve everything under /app (directory listing enabled)
-echo "[*] Serving on http://0.0.0.0:8080 ..."
-python -m http.server 8080 --directory /app
+echo "[*] Serving on http://0.0.0.0:9999 ..."
+# Serve everything in /app (index.html, /logs/, README_player.md, logs.zip)
+python -m http.server 9999 --directory /app
