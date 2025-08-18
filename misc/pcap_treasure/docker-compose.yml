@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  pcap_ctf:
+    build: .
+    ports:
+      - "8082:8080"
+    environment:
+      # === change these to create a new challenge ===
+      - FLAG=CTF{pcap_padding_fun}
+      - PCAP_MODE=DNS_BASE64         # or ETH_PADDING
+      - PCAP_NAME=sample.pcap
+      # optional tunables:
+      - DNS_CHUNK=6
+      - ETH_CHUNK=6
+      - SECRET_KEY=change-me
