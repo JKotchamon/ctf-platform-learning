@@ -5,6 +5,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:80"
-    # Uncomment during development to hot-reload static files without rebuilding:
-    # volumes:
-    #   - ./:/usr/share/nginx/html:ro
