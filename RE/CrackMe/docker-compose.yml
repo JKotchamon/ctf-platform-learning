@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  aes-re:
+    build:
+      context: .
+      args:
+        FLAG: ${FLAG:-CTF{AES_is_more_fun}}
+    container_name: aes-re
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - SECRET_KEY=d47f8c0e6f3a2b0d6b19e7c8f44a9e3c
+    restart: unless-stopped
+    read_only: true
+    tmpfs: ["/tmp"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s

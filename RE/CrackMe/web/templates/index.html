@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>AES Crackme</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>AES Crackme</h1>
+      <p class="subtitle">Download the checker, reverse it, and submit your flag.</p>
+      <a class="btn primary" href="/download">⬇ Download Binary</a>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashwrap">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="card">
+      <h2>Submit your flag</h2>
+      <form method="POST" action="/submit" class="form">
+        <input type="text" name="flag" placeholder="CTF{...}" required class="input" />
+        <button class="btn">Submit</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Hints</h2>
+      <details><summary>Hint 1</summary><p>AES-128 in ECB mode with PKCS#7 padding.</p></details>
+      <details><summary>Hint 2</summary><p>All blocks are checked, not just the first block.</p></details>
+      <details><summary>Hint 3</summary><p>The build-time tool creates a ciphertext target from the FLAG.</p></details>
+    </section>
+  </div>
+</body>
+</html>
