@@ -1,0 +1,29 @@
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  border-radius:1rem;padding:.6rem 1rem;background:#1f2937;border:1px solid #475569;
+  color:#fff;font-weight:600;transition:background .2s;
+}
+.btn:hover{ background:#334155; }
+
+/* Cards */
+.card{
+  border-radius:1rem;border:1px solid #cbd5e1;background:#ffffff;
+  padding:1.25rem;box-shadow:0 4px 12px rgba(0,0,0,.12);
+  color:#0f172a; /* default dark text in card */
+}
+/* 🔥 Make ALL text inside cards fully opaque & dark */
+.card h1,.card h2,.card h3,.card p,.card li,.card label,.card small{
+  color:#0f172a !important; opacity:1 !important;
+}
+
+/* Input: full-width, white, black text */
+.input{
+  width:100%;padding:.8rem 1rem;border-radius:.75rem;border:1px solid #64748b;
+  background:#ffffff;color:#000 !important;font-size:1rem;outline:none;
+}
+.input::placeholder{ color:#475569 !important; opacity:1 !important; }
+.input:focus{ border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,.35); }
+
+/* Inline code */
+code{ padding:.2rem .45rem;border-radius:.3rem;background:#e2e8f0;border:1px solid #94a3b8;color:#111827; }

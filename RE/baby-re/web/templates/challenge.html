@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="space-y-6">
+  <header class="space-y-2">
+    <h2 class="text-2xl font-semibold">baby-re-1</h2>
+    <p class="text-slate-300">Download the ELF and submit your flag when ready.</p>
+  </header>
+
+  <div class="card">
+    <div class="flex items-center gap-3">
+      {% if has_bin %}
+        <a class="btn" href="{{ url_for('download_binary') }}">⬇ Download binary</a>
+      {% else %}
+        <span class="text-rose-400">Binary not built yet. (It will be built inside the container.)</span>
+      {% endif %}
+    </div>
+    <p class="text-xs opacity-70 mt-2">Tip: run it locally; it prints “Correct!” when your input matches.</p>
+  </div>
+
+  <form method="post" action="{{ url_for('submit') }}" class="card space-y-4">
+    <label class="block text-sm text-slate-300">Your flag</label>
+    <input name="flag" required placeholder="CTF{...}" class="input" />
+    <button class="btn" type="submit">Submit</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Baby-RE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-slate-100">
+  <main class="mx-auto max-w-3xl px-4 py-10">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2 mb-6">
+          {% for category, msg in messages %}
+            <div class="rounded-2xl px-4 py-3
+              {% if category == 'success' %}bg-emerald-900/40 border border-emerald-700{% else %}bg-rose-900/40 border border-rose-700{% endif %}">
+              {{ msg }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="mx-auto max-w-3xl px-4 pb-10 text-sm text-slate-400">
+    BaBy-RE • a tiny reverse-engineering warm-up
+  </footer>
+</body>
+</html>

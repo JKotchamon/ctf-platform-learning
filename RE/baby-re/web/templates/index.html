@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="space-y-8">
+
+  <header class="space-y-3 text-center">
+    <h1 class="text-4xl font-extrabold tracking-tight">BaBy-RE</h1>
+    <p class="text-slate-300">Download the binary, recover the flag, and submit it below.</p>
+  </header>
+
+  <div class="grid gap-6 md:grid-cols-2">
+    <!-- Download card -->
+    <div class="card">
+      <h2 class="text-lg font-semibold mb-2">1) Get the file</h2>
+      {% if has_bin %}
+        <a class="btn w-full justify-center" href="{{ url_for('download') }}">⬇ Download <code>baby-re-1</code></a>
+      {% else %}
+        <div class="text-rose-400">Binary not built yet. Build the image or run <code>docker compose up --build</code>.</div>
+      {% endif %}
+      <p class="text-xs opacity-70 mt-3">Tip: run it locally; it prints “Correct!” on a valid flag.</p>
+    </div>
+
+    <!-- Submit card -->
+    <form method="post" action="{{ url_for('submit') }}" class="card space-y-4">
+        <h2 class="text-lg font-semibold">2) Submit your flag</h2>
+        <label class="">Your flag</label>
+        <input name="flag" required placeholder="CTF{...}" class="input" />
+        <button class="btn w-full" type="submit">Submit</button>
+        <p class="text-sm">
+            Server verification: Python check {{ "＋ ELF double-check" if also_exec else "" }}.
+        </p>
+    </form>
+  </div>
+
+  <!-- Hints -->
+  <div class="card space-y-3">
+    <h3 class="text-lg font-semibold">Hints</h3>
+    <ul class="list-disc pl-6 space-y-2">
+      <li>Focus on how each character is transformed byte-by-byte before comparison. Reversing that step helps.</li>
+      <li>Two simple operations are involved; think bitwise first, then a small arithmetic nudge.</li>
+      <li>If you spot a constant showing up many times, try applying it to the input and see what lands on the target array.</li>
+    </ul>
+  </div>
+
+</section>
+{% endblock %}

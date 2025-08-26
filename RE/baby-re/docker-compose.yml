@@ -1,7 +1,11 @@
-version: "3.8"
+version: "3.9"
 services:
-  baby-re-1:
+  baby-re:
     build: .
     ports:
-      - "8080:8080"
+      - "8000:8000"
+    environment:
+      # set to "true" if you also want to run the ELF for double-check
+      EXECUTE_TO_VERIFY: "false"
+      FLASK_SECRET: "please-change-this"
     restart: unless-stopped
