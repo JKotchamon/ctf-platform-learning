@@ -1,8 +1,0 @@
-version: "3.9"
-services:
-  stego:
-    image: ctf-stego-medium
-    build: .
-    ports:
-      - "7777:80"      # open http://localhost:7777
-    restart: unless-stopped

@@ -33,10 +33,3 @@ rm -rf dist && mkdir -p dist/files
 #    - dist/index.html
 #    - dist/style.css
 #    - dist/app.js
-
-# 3) Build image
-DOCKER_BUILDKIT=1 docker build -t ctf-stego-medium .
-
-echo "Built image: ctf-stego-medium"
-echo "Run with Compose: docker compose up -d"
-echo "Or: docker run --rm -p 8081:80 ctf-stego-medium"
