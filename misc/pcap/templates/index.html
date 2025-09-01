@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ card.title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>{{ card.title }}</h1>
+    <ul class="card">
+      <li><b>File:</b> <code>{{ card.filetype }}</code> network capture.</li>
+      <li><b>Trick:</b> {{ card.trick }}</li>
+      <li><b>Why fun:</b> {{ card.why_fun }}</li>
+      <li><b>Difficulty:</b> {{ card.difficulty }}</li>
+    </ul>
+
+    <section class="actions">
+      <a class="btn" href="/download">Download PCAP</a>
+      <a class="btn secondary" href="https://www.wireshark.org/docs/wsug_html/" target="_blank" rel="noreferrer">Wireshark Guide</a>
+    </section>
+
+    <!-- Instruction -->
+    <p><b>Instruction:</b> There are exactly <b>5 fragments</b> hidden across the packets. 
+    Find and reassemble them in the correct order to recover the secret.</p>
+
+    <!-- Hints as separate dropdowns -->
+    <details class="hints">
+      <summary>Hint 1</summary>
+      <p>Check the DNS TXT answers — each one contains part of the secret.</p>
+    </details>
+
+    <details class="hints">
+      <summary>Hint 2</summary>
+      <p>Reassemble the fragments in order of <code>frame.number</code> or DNS ID.</p>
+    </details>
+
+    <details class="hints">
+      <summary>Hint 3</summary>
+      <p>Useful display filters: <code>dns</code>, <code>dns.txt</code>, <code>frame.number</code>.</p>
+    </details>
+  </div>
+</body>
+</html>
