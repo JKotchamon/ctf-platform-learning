@@ -10,41 +10,38 @@
   <main class="wrap">
     <header class="hero">
       <h1>Log Mastery</h1>
-      <p class="sub">Submit your flag to verify.</p>
+      <p class="sub">Download the logs, recover the flag offline.</p>
     </header>
 
     <section class="card">
-      <form id="flagForm" autocomplete="off">
-        <label for="flagInput" class="label">Your flag</label>
-        <input id="flagInput" name="flag" class="input" placeholder="{...}" required />
-        <button class="btn" type="submit" aria-label="Submit flag">Check</button>
-        <a class="btn" href="/logs.zip" download style="margin-left:8px">Download all logs</a>
-      </form>
-      <p id="result" role="status" class="result" aria-live="polite"></p>
+      <a class="btn" href="/logs.zip" download>Download all logs</a>
+      <p class="note">
+        Your task: find fragmented lines marked like
+        <code>part-#/# data=...</code> across the log files, order by the part
+        number, concatenate the <code>data</code> pieces, then decode the
+        resulting blob to reveal the flag.
+      </p>
     </section>
 
     <section class="card hint">
       <h2 style="margin:0 0 8px;">How to play (quick)</h2>
       <ol style="margin:0 0 8px 18px;">
         <li>Click <strong>Download all logs</strong> to get <code>logs.zip</code> and extract it.</li>
-        <li>Hunt for repeating fragments marked like <code>part-#/# data=...</code>.</li>
-        <li>Order the fragments by their number and join the <code>data</code> values into one long string.</li>
-        <li>Turn that string back into readable text using a common single-step decoder. (The alphabet looks familiar.)</li>
-        <li>Submit the recovered flag above.</li>
+        <li>Search all files for fragments labeled <code>part-#/# data=...</code>.</li>
+        <li>Order fragments by their number, join the <code>data</code> values into one long string.</li>
+        <li>Decode that string using a very common single-step decoder.</li>
+        <li>Flag found! (No submission form on this page.)</li>
       </ol>
       <details>
         <summary>Need a nudge? (subtle hint)</summary>
         <ul>
-          <li>The fragments combine into a single blob before any decoding.</li>
-          <li>If the blob sometimes ends with <code>=</code>, you’re probably on the right track.</li>
+          <li>The fragments combine into one blob before any decoding.</li>
+          <li>If the blob sometimes ends with <code>=</code>, you’re on the right track.</li>
         </ul>
       </details>
     </section>
 
-    <footer class="foot">
-      <!-- Intentionally minimal footer; no direct links to /logs or README -->
-    </footer>
+    <footer class="foot"></footer>
   </main>
-  <script src="./app.js"></script>
 </body>
 </html>
