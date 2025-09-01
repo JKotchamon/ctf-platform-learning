@@ -5,8 +5,6 @@
   --muted:#94a3b8;
   --accent:#60a5fa;
   --accent-strong:#3b82f6;
-  --success:#22c55e;
-  --error:#ef4444;
 }
 
 * { box-sizing: border-box; }
@@ -26,9 +24,8 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 600px;   /* optional: limits the card width */
+  max-width: 600px;
 }
-@media (max-width:880px){ .wrap{ grid-template-columns: 1fr; } }
 
 .card {
   background:linear-gradient(180deg, rgba(11,18,32,.8), rgba(11,18,32,.6));
@@ -46,7 +43,7 @@ body {
 
 .row { display:flex; gap:10px; flex-wrap:wrap; margin: 6px 0 18px; }
 
-.btn, .link {
+.btn {
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
   padding:11px 16px; border-radius:12px; cursor:pointer; border:1px solid transparent;
   font-weight:600; text-decoration:none;
@@ -54,31 +51,5 @@ body {
 }
 .btn-primary { color:#fff; background:linear-gradient(180deg, var(--accent), var(--accent-strong)); }
 .btn-primary:hover { transform: translateY(-1px); }
-.link { color:var(--accent); border-color:rgba(96,165,250,.35); background:rgba(96,165,250,.08); }
-.link:hover { border-color:rgba(96,165,250,.6); }
-
-.field { display:flex; gap:10px; align-items:center; margin-top:8px; }
-input[type="text"]{
-  flex:1; min-width:220px; padding:14px 16px;
-  background:rgba(2,6,23,.55); color:var(--text);
-  border:1px solid rgba(148,163,184,.28); border-radius:12px; outline:none;
-}
-input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.35); }
-
-.helper { color:var(--muted); font-size:.92rem; margin-top:8px; }
-.status { margin-top:12px; font-weight:700; }
-.status.success { color: var(--success); }
-.status.error { color: var(--error); }
-
-.panel { display:grid; gap:14px; }
-.badge {
-  display:inline-block; padding:8px 12px; border-radius:999px;
-  color:var(--muted); background:rgba(148,163,184,.06);
-  border:1px solid rgba(148,163,184,.25);
-}
 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-
-#confetti {
-  position:fixed; inset:0; pointer-events:none; z-index:50; display:none;
-}

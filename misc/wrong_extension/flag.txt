@@ -1,1 +1,0 @@
-CTF{wrong_extension_is_fun}

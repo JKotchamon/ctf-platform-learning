@@ -7,17 +7,17 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas id="confetti" aria-hidden="true"></canvas>
-
   <div class="wrap">
-    <!-- Left: Challenge -->
     <section class="card">
       <h1 class="title">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 2l7 3v6c0 5-3.5 9-7 11-3.5-2-7-6-7-11V5l7-3z" stroke="url(#g1)" stroke-width="1.4" fill="none"/>
-          <defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24">
-            <stop stop-color="#93c5fd"/><stop offset="1" stop-color="#3b82f6"/>
-          </linearGradient></defs>
+          <path d="M12 2l7 3v6c0 5-3.5 9-7 11-3.5-2-7-6-7-11V5l7-3z"
+                stroke="url(#g1)" stroke-width="1.4" fill="none"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="24" y2="24">
+              <stop stop-color="#93c5fd"/><stop offset="1" stop-color="#3b82f6"/>
+            </linearGradient>
+          </defs>
         </svg>
         Wrong Extension
       </h1>
@@ -29,27 +29,13 @@
 
       <ol class="steps">
         <li>Download the file below.</li>
-        <li>Inspect its true type (not just the extension).</li>
-        <li>Open it correctly and dig around.</li>
-        <li>Find <span class="mono">flag.txt</span> and submit it here.</li>
+        <li>Inspect the file carefully.</li>
       </ol>
 
       <div class="row">
         <a class="btn btn-primary" href="picture.jpg" download>Download file</a>
       </div>
-
-      <hr/>
-
-      <h3 id="submit">Submit your flag</h3>
-      <div class="field">
-        <input id="flagInput" type="text" placeholder="CTF{your_findings_here}" autocomplete="off" spellcheck="false" />
-        <button class="btn btn-primary" id="submitBtn" type="button">Submit</button>
-      </div>
-      <div class="helper">Tip: Exact match required, including braces.</div>
-      <div id="status" class="status" role="status" aria-live="polite"></div>
     </section>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

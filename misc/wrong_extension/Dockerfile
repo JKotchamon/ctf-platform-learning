@@ -1,10 +1,6 @@
-# Use a small Nginx image
-FROM nginx:1.27-alpine
+FROM nginx:alpine
 
-# Copy our nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Copy static assets into the html directory
-COPY index.html style.css script.js picture.jpg /usr/share/nginx/html/
-
-EXPOSE 80
+# Copy challenge files
+COPY index.html /usr/share/nginx/html/index.html
+COPY style.css   /usr/share/nginx/html/style.css
+COPY picture.jpg /usr/share/nginx/html/picture.jpg
