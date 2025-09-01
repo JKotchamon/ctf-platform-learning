@@ -3,10 +3,13 @@ import os, base64
 from pathlib import Path
 import qrcode
 
+# Output directory for static artifacts
 OUT = Path("static")
 OUT.mkdir(exist_ok=True)
 
-flag = os.getenv("FLAG_QR", "CTF{Mike_QR_Code}")
+# Dynamic flag from env (provided by GZ::CTF at runtime).
+# Default only for local development.
+flag = os.getenv("GZCTF_FLAG", "flag{dev_local_testing}")
 
 # Create the challenge payload (Base64 of the flag)
 payload = base64.b64encode(flag.encode()).decode()
