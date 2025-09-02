@@ -1,26 +1,20 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
-# Safety + smaller image
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+WORKDIR /app
 
-# Create non-root user
-RUN useradd -m ctf
-WORKDIR /challenge
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy app
-COPY app/ ./app/
-RUN mkdir -p /data && chown -R ctf:ctf /data
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install deps
-RUN pip install --no-cache-dir -r app/requirements.txt
+COPY . /app
 
-# Init DB at container start if empty
-COPY --chown=ctf:ctf app/init_db.py ./init_db.py
+RUN mkdir -p /data
 
-USER ctf
+ENV PYTHONUNBUFFERED=1
 
-# Start script: init DB once then run Flask
-CMD [ "bash", "-lc", "if [ ! -f /data/app.db ]; then python init_db.py; fi && FLASK_APP=app/app.py flask run --host=0.0.0.0 --port=8080" ]
+EXPOSE 5000
 
-EXPOSE 8080
+CMD ["sh", "-c", "python init_db.py && flask run --host=0.0.0.0 --port=5000"]
