@@ -1,8 +1,0 @@
-version: "3.9"
-services:
-  web:
-    build: .
-    image: mini-site-hidden-flag:latest
-    ports:
-      - "8080:80"
-    restart: unless-stopped

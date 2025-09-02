@@ -1,10 +1,21 @@
+# Dockerfile
 FROM nginx:alpine
 
-# Copy static site
-COPY index.html /usr/share/nginx/html/index.html
-COPY about.html /usr/share/nginx/html/about.html
-COPY resources.html /usr/share/nginx/html/resources.html
-COPY styles.css /usr/share/nginx/html/styles.css
+# For the tiny entrypoint script
+RUN apk add --no-cache bash
 
-# Optional hardening / cosmetics
-RUN sed -i 's/# server_tokens off;/server_tokens off;/' /etc/nginx/nginx.conf
+# Put the site where nginx serves from
+WORKDIR /usr/share/nginx/html
+
+# Copy your static site
+COPY index.html about.html resources.html styles.css ./
+
+# Copy our start script that will inject the per-instance flag
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# nginx listens on 80 in the container
+EXPOSE 80
+
+# On start: inject the flag, then run nginx in the foreground
+CMD ["/bin/sh","-c","/entrypoint.sh && nginx -g 'daemon off;'"]
