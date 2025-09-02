@@ -1,26 +1,26 @@
-# syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
-# System deps (optional but handy)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates tini && rm -rf /var/lib/apt/lists/*
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8081
 
 WORKDIR /srv/app
 
-# Install Python deps first (better caching)
+# Create non-root user
+RUN adduser --disabled-password --gecos '' app
+
+# Deps
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project
-COPY . .
+# Copy code and give it to `app`
+COPY --chown=app:app app ./app
+COPY --chown=app:app tools ./tools
+COPY --chown=app:app entrypoint.sh ./entrypoint.sh
+RUN chmod +x /srv/app/entrypoint.sh \
+    && mkdir -p /srv/app/app/challenge \
+    && chown -R app:app /srv/app
 
-# Normalize line endings and ensure executability
-RUN sed -i 's/\r$//' /srv/app/entrypoint.sh /srv/app/tools/*.py /srv/app/app/app.py && \
-    chmod +x /srv/app/entrypoint.sh
-
-# The Flask app listens on 8081 (see app.py):contentReference[oaicite:1]{index=1}
 EXPOSE 8081
-
-# Use tini to handle signals cleanly
-ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["/srv/app/entrypoint.sh"]
+USER app
+ENTRYPOINT ["/srv/app/entrypoint.sh"]

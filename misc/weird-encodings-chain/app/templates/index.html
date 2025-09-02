@@ -30,17 +30,6 @@
 <body>
   <main>
     <h1>Weird Encodings Chain</h1>
-
-    <!-- Flag Submission Channel FIRST -->
-    <div class="flag-box">
-      <h2>Submit Your Flag</h2>
-      <form id="flagForm" class="flag-row">
-        <input type="text" id="flagInput" placeholder="Enter flag here (CTF{...})" required/>
-        <button type="submit">Check</button>
-      </form>
-      <div id="result"></div>
-    </div>
-
     <!-- Challenge meta and hash BELOW the submission box -->
     <ul class="bullets">
       <li><b>File:</b> A text file that looks like gibberish.</li>
@@ -54,26 +43,26 @@
     <h2 style="margin-top:2rem;">Hints (progressive)</h2>
 
     <details>
-        <summary>Hint 1 (gentle)</summary>
+        <summary>Hint 1 </summary>
         <p>The text is made entirely of characters 0–9 and a–f.  
         That usually means you should think in pairs.</p>
     </details>
 
     <details>
-        <summary>Hint 2 (medium)</summary>
+        <summary>Hint 2 </summary>
         <p>Once you turn those pairs into symbols, you’ll see a strange language
         of dots, dashes, and slashes. It’s older than telephones.</p>
     </details>
 
     <details>
-        <summary>Hint 3 (strong)</summary>
+        <summary>Hint 3 </summary>
         <p>After the beeps become letters, they still read a bit “tilted.”
            Give every letter the same small rotation; digits and symbols stay put,
            and the shift wraps around the ends (…Z rolls back to A). Doing the same twist twice cancels it.</p>
     </details>
 
     <details>
-        <summary>Hint 4 (final)</summary>
+        <summary>Hint 4 </summary>
         <p>Now you’ll hold a message that only uses uppercase letters A–Z and the digits 2–7.
         It’s a way computers often turn binary into text for easier copying.</p>
     </details>
@@ -87,25 +76,5 @@
     <p class="tiny">If you get stuck, consider whether you’re decoding in the right order — onions don’t peel from the middle 🧅.</p>
   </main>
 
-  <script>
-    document.getElementById("flagForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      const flag = document.getElementById("flagInput").value.trim();
-      const res = await fetch("/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ flag })
-      });
-      const data = await res.json();
-      const result = document.getElementById("result");
-      if (data.correct) {
-        result.textContent = "Correct flag!";
-        result.className = "ok";
-      } else {
-        result.textContent = "Wrong flag, try again.";
-        result.className = "fail";
-      }
-    });
-  </script>
 </body>
 </html>

@@ -35,13 +35,5 @@ def robots():
     resp.mimetype = "text/plain"
     return resp
 
-# Optional: simple verifier (POST JSON: {"flag":"CTF{...}"})
-@app.route("/verify", methods=["POST"])
-def verify():
-    submitted = request.json.get("flag","")
-    real = read_text(FLAG_PATH)
-    ok = (submitted == real)
-    return jsonify({"correct": ok})
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8081)

@@ -1,2 +1,0 @@
-# This file will be generated on container start.
-# See entrypoint.sh and tools/build.py
