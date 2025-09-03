@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Mini Blog — Stored XSS Challenge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>📝 Mini Blog</h1>
+    <p>Leave a comment. Totally safe. Definitely not vulnerable. 😉</p>
+
+    <section class="card">
+      <h2>New Comment</h2>
+      <form id="postForm">
+        <label>
+          Name
+          <input type="text" name="name" placeholder="anon" />
+        </label>
+        <label>
+          Comment
+          <textarea name="content" rows="4" placeholder="Be nice ✨"></textarea>
+        </label>
+        <button type="submit">Post</button>
+      </form>
+      <p id="postMsg"></p>
+    </section>
+
+    <section class="card">
+      <div class="flex">
+        <h2>Comments</h2>
+        <button id="reloadBtn" title="Reload">↻</button>
+      </div>
+      <ul id="comments" class="comments"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Report to Admin</h2>
+      <p>Think you found something interesting? Ask our admin to review a path.</p>
+      <form id="reportForm">
+        <label>
+          Path (relative)
+          <input type="text" name="path" value="/" />
+        </label>
+        <button type="submit">Report</button>
+      </form>
+      <p class="hint">The admin uses a real browser with special cookies.</p>
+    </section>
+  </main>
+
+  <script>
+    async function loadComments() {
+      const ul = document.getElementById("comments");
+      ul.innerHTML = "<li>Loading…</li>";
+      const res = await fetch("/api/comments");
+      const data = await res.json();
+      ul.innerHTML = "";
+      // VULNERABLE: we assign untrusted content via innerHTML (stored XSS)
+      for (const row of data) {
+        const li = document.createElement("li");
+        li.className = "comment";
+        li.innerHTML =
+          `<div class="meta">${row.name} · <span>${new Date(row.created_at).toLocaleString()}</span></div>
+           <div class="content">${row.content}</div>`;
+        ul.appendChild(li);
+      }
+    }
+
+    document.getElementById("reloadBtn").addEventListener("click", loadComments);
+
+    document.getElementById("postForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const res = await fetch("/api/comment", { method: "POST", body: fd });
+      const out = document.getElementById("postMsg");
+      if (res.ok) {
+        out.textContent = "Posted!";
+        e.target.reset();
+        loadComments();
+      } else {
+        const j = await res.json().catch(()=>({msg:"error"}));
+        out.textContent = "Error: " + (j.msg || "unknown");
+      }
+    });
+
+    document.getElementById("reportForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const path = fd.get("path") || "/";
+      const res = await fetch("/report?path=" + encodeURIComponent(path));
+      if (res.ok) {
+        alert("Admin is checking that path. If your payload works, the rest is up to you.");
+      } else {
+        const j = await res.json().catch(()=>({error:"unknown"}));
+        alert("Report failed: " + j.error);
+      }
+    });
+
+    // Initial load
+    loadComments();
+  </script>
+</body>
+</html>
