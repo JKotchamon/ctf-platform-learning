@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Acme Intranet — Sign in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --bg1:#0f172a; --bg2:#1e293b; --accent:#22d3ee; --muted:#94a3b8; }
+    * { box-sizing: border-box; }
+    body {
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      background: radial-gradient(1200px 600px at 10% 10%, #0b1220 0%, #0a0f1a 35%, #05070c 100%);
+      color:#e5e7eb; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    .card {
+      width: min(480px, 92vw);
+      background: linear-gradient(145deg, rgba(30,41,59,.8), rgba(15,23,42,.6));
+      border: 1px solid rgba(148,163,184,.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      backdrop-filter: blur(14px);
+      border-radius: 18px; padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-weight: 700; letter-spacing:.2px; }
+    p.sub { margin:0 0 22px; color: var(--muted); }
+    label { display:block; margin:12px 0 8px; color:#cbd5e1; font-size:14px; }
+    input[type=text], input[type=password] {
+      width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25);
+      background: rgba(2,6,23,.6); color:#e5e7eb; outline:none; transition:.2s border-color, .2s box-shadow;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(34,211,238,.15); }
+    button {
+      width:100%; margin-top:16px; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25);
+      background: linear-gradient(135deg, rgba(34,211,238,.2), rgba(34,211,238,.05));
+      color:#e5e7eb; font-weight:600; letter-spacing:.3px; cursor:pointer; transition:.2s transform,.2s box-shadow,.2s background;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(34,211,238,.15); }
+    .hint { margin-top:14px; font-size:13px; color: var(--muted); }
+    .msg { margin:14px 0 0; padding:10px 12px; border-radius:10px; background: rgba(239,68,68,.12); border:1px solid rgba(239,68,68,.25); color:#fecaca; }
+    .brand {
+      display:flex; gap:10px; align-items:center; margin-bottom:14px; color:#e2e8f0;
+    }
+    .logo {
+      width:36px; height:36px; display:grid; place-items:center; border-radius:10px;
+      background: radial-gradient(180px 80px at 20% 20%, rgba(34,211,238,.45), rgba(34,211,238,.08));
+      border:1px solid rgba(148,163,184,.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <div class="logo">★</div>
+      <div>
+        <div style="font-weight:700; letter-spacing:.3px;">Acme Intranet</div>
+        <div style="font-size:12px; color:#94a3b8;">Restricted access</div>
+      </div>
+    </div>
+    <h1>Sign in</h1>
+    <p class="sub">Use your employee account to continue.</p>
+
+    {% if message %}
+      <div class="msg">{{ message }}</div>
+    {% endif %}
+
+    <form method="post" action="/login" autocomplete="off">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" placeholder="e.g. admin" required>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" placeholder="Your secret" required>
+
+      <button type="submit">Sign in</button>
+      <div class="hint">Tip: Strong passwords required for production. (Security is everyone’s job!)</div>
+    </form>
+  </div>
+</body>
+</html>
