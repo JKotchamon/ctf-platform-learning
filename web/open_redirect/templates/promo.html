@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Partner Reward</h2>
+<p>You’re almost there. We’ll send you to our partner site to finalize your claim.</p>
+
+<p class="muted">
+  <!-- Tiny hint: We only send codes to <https://safe.example.com>. -->
+  <!-- But are we *really* sure it's safe.example.com and nothing else? -->
+  <!-- Inspect the HTML comments and try crafting a special 'next=' parameter on /promo -->
+  Try a link such as:
+  <code>/promo?next=https://safe.example.com/welcome</code>.
+</p>
+
+<p>
+  <a class="button" href="/promo?next=https://safe.example.com/welcome">Go to partner</a>
+</p>
+{% endblock %}
