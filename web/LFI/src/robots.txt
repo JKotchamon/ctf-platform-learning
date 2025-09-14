@@ -1,0 +1,6 @@
+User-agent: *
+Disallow:
+
+# Gentle nudge for beginners (not a full spoiler):
+# Explore configuration files to understand server paths.
+# Common place: /etc/nginx/nginx.conf
