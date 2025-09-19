@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XML Resume Parser</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 600px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 250px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            font-size: 14px;
+            resize: none;
+        }
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: left;
+        }
+        .error {
+            margin-top: 20px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Your XML Resume</h2>
+        <form method="POST" action="/upload">
+            <textarea name="xml" placeholder="Paste your XML here..."></textarea><br>
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <h3>📄 Parsed Resume</h3>
+            <p><b>Name:</b> {{ result.name }}</p>
+            <p><b>Email:</b> {{ result.email }}</p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">Error parsing XML: {{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
