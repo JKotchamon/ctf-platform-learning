@@ -1,15 +1,13 @@
 import os
 import sqlite3
 from pathlib import Path
-from flask import Flask, request, jsonify, send_from_directory, Response, make_response
+from flask import Flask, request, jsonify, send_from_directory, Response
 from datetime import datetime
-
-# Playwright (sync) for the admin bot
+from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 
 DB_PATH = Path("comments.db")
-EXFIL_LOG = []  # in-memory for operator visibility (players can't read this)
-
+EXFIL_LOG = []
 app = Flask(__name__)
 
 FLAG = os.environ.get("GZCTF_FLAG", "flag{this_is_a_static_flag}")
@@ -27,18 +25,10 @@ def init_db():
     """)
     con.commit()
     con.close()
-
 init_db()
-
-@app.after_request
-def add_headers(resp):
-    # Deliberately permissive CSP to allow inline JS for the challenge
-    resp.headers["X-Content-Type-Options"] = "nosniff"
-    return resp
 
 @app.get("/")
 def root():
-    # Serve the flat HTML file from current dir
     return send_from_directory(".", "index.html")
 
 @app.get("/style.css")
@@ -53,81 +43,90 @@ def health():
 def api_comments():
     con = sqlite3.connect(DB_PATH)
     con.row_factory = sqlite3.Row
-    rows = con.execute("SELECT id, name, content, created_at FROM comments ORDER BY id DESC LIMIT 50").fetchall()
+    rows = con.execute(
+        "SELECT id, name, content, created_at FROM comments ORDER BY id DESC LIMIT 50"
+    ).fetchall()
     con.close()
-    data = [dict(r) for r in rows]
-    return jsonify(data)
+    return jsonify([dict(r) for r in rows])
 
 @app.post("/api/comment")
 def api_comment_create():
-    # Accept form or JSON
-    name = (request.form.get("name") or (request.json or {}).get("name") or "anon")[:32]
-    content = (request.form.get("content") or (request.json or {}).get("content") or "").strip()
+    payload = request.form if request.form else (request.json or {})
+    name = (payload.get("name") or "anon")[:32]
+    content = (payload.get("content") or "").strip()
     if not content:
         return jsonify({"ok": False, "msg": "content required"}), 400
     if len(content) > 800:
         return jsonify({"ok": False, "msg": "content too long"}), 400
 
     con = sqlite3.connect(DB_PATH)
-    cur = con.cursor()
-    cur.execute("INSERT INTO comments(name, content, created_at) VALUES(?, ?, ?)",
-                (name, content, datetime.utcnow().isoformat()+"Z"))
+    con.execute(
+        "INSERT INTO comments(name, content, created_at) VALUES(?, ?, ?)",
+        (name, content, datetime.utcnow().isoformat() + "Z"),
+    )
     con.commit()
     con.close()
     return jsonify({"ok": True})
 
-def admin_visit(path: str):
+def admin_visit(base_url: str, path: str):
     """
-    Launch a headless Chromium that visits http://127.0.0.1:8888{path}
-    with a readable cookie containing the flag (no HttpOnly).
+    Visit {base_url}{path} with a headless admin browser that carries a readable cookie FLAG=<flag>.
+    base_url includes scheme+host(+port), e.g. http://host:12345
     """
     if not path.startswith("/"):
         raise ValueError("Path must start with '/'")
+    base = base_url.rstrip("/")
+    target = f"{base}{path}"
 
-    target = f"http://127.0.0.1:8888{path}"
+    parsed = urlparse(base)
+    cookie_domain = parsed.hostname or "127.0.0.1"
+
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
-        context = browser.new_context()  # default = not HttpOnly, readable by JS
-        # Set cookie for 127.0.0.1
+        # Important flags for containers/sandboxes:
+        # --no-sandbox: avoid sandbox requirement (CTF platforms often run as root in containers)
+        # --disable-dev-shm-usage: avoid crashing on small /dev/shm
+        browser = p.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-dev-shm-usage", "--disable-gpu"]
+        )
+        context = browser.new_context()
         context.add_cookies([{
             "name": "FLAG",
             "value": FLAG,
-            "domain": "127.0.0.1",
+            "domain": cookie_domain,
             "path": "/"
         }])
         page = context.new_page()
-        try:
-            page.goto(target, wait_until="domcontentloaded", timeout=15000)
-            page.wait_for_timeout(4000)  # give payloads time to run
-        finally:
-            browser.close()
+        page.goto(target, wait_until="domcontentloaded", timeout=20000)
+        # Give payloads time to run (e.g., async exfil)
+        page.wait_for_timeout(5000)
+        browser.close()
 
 @app.get("/report")
 def report():
     """
-    Players call: /report?path=/  (or a specific path) to trigger an admin visit.
-    The bot carries the FLAG cookie, which is readable by JS (no HttpOnly).
+    Players click 'Report' -> we build base_url from the *actual* request host:port,
+    unless ADMIN_BASE_URL is set to override (for reverse proxies).
     """
     path = request.args.get("path", "/")
+    base_url = (os.environ.get("ADMIN_BASE_URL") or request.host_url).rstrip("/")
     try:
-        admin_visit(path)
+        admin_visit(base_url, path)
+        return jsonify({"ok": True, "visited": f"{base_url}{path}"})
     except Exception as e:
-        return jsonify({"ok": False, "error": str(e)}), 400
-    return jsonify({"ok": True, "msg": "Admin will/has visited the page."})
+        # Show exactly what we tried so you can see host:port
+        return jsonify({"ok": False, "error": str(e), "target": f"{base_url}{path}"}), 500
 
 @app.get("/x")
 def collector():
-    """
-    A blind exfil endpoint for the ADMIN browser to hit (same-origin).
-    Players won't see this output, but it's useful for operators to verify.
-    Real players should exfiltrate to their own server.
-    """
+    # Operator-only exfil view (players should exfil to their own host)
     q = dict(request.args)
-    logline = {"time": datetime.utcnow().isoformat()+"Z", "data": q, "ua": request.headers.get("User-Agent","")}
+    logline = {"time": datetime.utcnow().isoformat()+"Z", "data": q,
+               "ua": request.headers.get("User-Agent", "")}
     EXFIL_LOG.append(logline)
     print("[EXFIL]", logline, flush=True)
     return Response(status=204)
 
 if __name__ == "__main__":
-    # Dev server (use gunicorn in Docker)
-    app.run(host="0.0.0.0", port=8888, debug=False)
+    # Local dev only; use gunicorn in Docker
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "8888")), debug=False)
