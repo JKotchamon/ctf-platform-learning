@@ -38,15 +38,12 @@ int main() {
         printf("\n> ");
         fgets(announcement, sizeof(announcement), stdin);
         
-        // Remove newline character from fgets
         announcement[strcspn(announcement, "\n")] = 0;
 
         printf("Announcing: ");
-        // 🔥 VULNERABILITY HERE! 🔥
         printf(announcement);
         printf("\n");
 
-        // Check if the access_level variable has been overwritten to the correct value.
         if (access_level == 0x1337) {
             printf("\nWow! That was a powerful announcement!\n");
             print_flag();
